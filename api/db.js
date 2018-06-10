@@ -2,14 +2,15 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 // Connection URL
-const url = "mongodb://helloworld-juba1-cosmo-account:kVF9e7JevI9Iv4zVYvy0zRpSlba43e1gwnvlskJAuLHI9iheooMl4veRaEF1nDvjXi6bXmoscAvapoxtXO6PFQ%3D%3D@helloworld-juba1-cosmo-account.documents.azure.com:10255/?ssl=true";
-//const url = "mongodb://@localhost:27017"
+let database = process.env.DATABASE || "@localhost:27017";
+const url = `mongodb://${database}`
 
 // Database Name
 const dbName = 'helloworld-database';
 
 async function Test() {
-    client = await MongoClient.connect(url, { useNewUrlParser: true });
+    console.log(`connecting to ${url}`);
+    client = await MongoClient.connect(url);
     console.log("Connected successfully to server");
 
     const db = client.db(dbName);
