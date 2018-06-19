@@ -1,66 +1,40 @@
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-// Connection URL
-const localDB = "@localhost:27017";
-let database = process.env.DATABASE || localDB;
-
-function URL(db) { return `mongodb://${db}`; }
-
-// Database Name
-const dbName = 'helloworld-database';
-const RSFA_COLLECTION = "rsfa";
+const { Collection } = require("./collection");
 
 async function Test() {
-    const url = URL(database);
-    console.log(`connecting to ${url}`);
-    client = await MongoClient.connect(url);
-    console.log("Connected successfully to server");
-
-    const db = client.db(dbName);
-    const rsfa = db.collection(RSFA_COLLECTION);
-    const rsfaCount = await (rsfa.find().count());
-    console.log(`rsfaCount: ${rsfaCount}`);
-    const result = {
-        query_time: (new Date()).toString(),
-        collections: (await db.listCollections().toArray()).map(x => x.name),
-        size_of_rsfa: rsfaCount
-    };
-
-    client.close();
-
-    console.log(JSON.stringify(result, null, "  "))
-    return result;
+    let data;
+    try {
+        data = await Collection();
+        const rsfaCount = await data.find().count();
+        console.log(`rsfaCount: ${rsfaCount}`);
+        return {
+            query_time: new Date().toString(),
+            collections: (await data
+                .parentDB()
+                .listCollections()
+                .toArray()).map(x => x.name),
+            size_of_rsfa: rsfaCount
+        };
+    } finally {
+        if (data) data.close();
+    }
 }
 
 async function Upload() {
-    if (database !== localDB) {
-        return { error: "Upload is not possible due to the current environment. (No connection specified to a cloud DB.)" };
-    }
-    let clients = [];
-    const getCollection = async (dbPath, title) => {
-        try {
-            const url = URL(dbPath);
-            console.log(`connecting to ${url}`);
-            client = await MongoClient.connect(url);
-            clients.push(client);
-            console.log(`Connected successfully to ${title} server`);
-            const db = client.db(dbName);
-            return db.collection(RSFA_COLLECTION);
-        }
-        catch (err) {
-            console.log(err);
-            return null;
-        }
+    if (!(process.env.LOCAL_DB && process.env.CLOUD_DB)) {
+        return {
+            error:
+                "Upload is not possible due to the current environment. Please specify both LOCAL_DB and CLOUD_DB"
+        };
     }
 
     let [local, cloud] = [null, null];
     try {
         [local, cloud] = await Promise.all([
-            getCollection(localDB, 'local'),
-            getCollection(process.env.CLOUD_DB, 'cloud')
+            Collection({ server: process.env.LOCAL_DB, title: "local" }),
+            Collection({ server: process.env.CLOUD_DB, title: "cloud" })
         ]);
-        if (!local || !cloud) throw "Upload aborted due to database connection error";
+        if (!local || !cloud)
+            throw "Upload aborted due to database connection error";
 
         var bulk = cloud.initializeUnorderedBulkOp();
         const localItems = await local.find().toArray();
@@ -70,13 +44,12 @@ async function Upload() {
         bulk.execute();
 
         return { success: "Upload finished successfully" };
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
         return { error: err };
-    }
-    finally {
-        clients.forEach(c => c.close());
+    } finally {
+        if (local) local.close();
+        if (cloud) cloud.close();
     }
 }
 
