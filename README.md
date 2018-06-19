@@ -1,4 +1,3 @@
 
-[![Travis](https://img.shields.io/travis/USER/REPO.svg)](https://travis-ci.org/klapantius/rsfaperfx)
-
+[![Build Status](https://travis-ci.org/klapantius/rsfaperfx.svg?branch=master)](https://travis-ci.org/klapantius/rsfaperfx)
 "# rsfaperfx" 
