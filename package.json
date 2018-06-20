@@ -33,6 +33,6 @@
     "@types/next": "^2.4.7",
     "@types/react": "^16.0.36",
     "nodemon": "^1.17.5",
-    "ts-node": "^4.1.0",
+    "ts-node": "^4.1.0"
   }
 }
