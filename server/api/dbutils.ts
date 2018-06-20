@@ -1,13 +1,13 @@
 const { Collection } = require("./collection");
 
-async function Test() {
+export async function Test() {
     let data;
     try {
         data = await Collection();
         const rsfaCount = await data.find().count();
         console.log(`rsfaCount: ${rsfaCount}`);
         return {
-            query_time: new Date().toString(),
+            query_time: `Query time: ${new Date().toString()}`,
             size_of_rsfa: rsfaCount,
             first10: await data.find().limit(10).toArray()
         };
@@ -16,7 +16,7 @@ async function Test() {
     }
 }
 
-async function Upload() {
+export async function Upload() {
     if (!(process.env.LOCAL_DB && process.env.CLOUD_DB)) {
         return {
             error:
@@ -49,5 +49,3 @@ async function Upload() {
         if (cloud) cloud.close();
     }
 }
-
-module.exports = { Test, Upload };

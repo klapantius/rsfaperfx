@@ -1,6 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 
-async function Collection(accessParams = {
+export async function Collection(accessParams = {
     server: process.env.DATABASE || "@localhost:27017",
     database: "helloworld-database",
     collection: "rsfa",
@@ -26,10 +26,8 @@ async function Collection(accessParams = {
         };
     }
     catch (err) {
-        log(`accessing of collection with parameters ${{server: accessParams.server.substring(0, 10), db: accessParams.database, collection: accessParams.collection}} failed: ${err}`);
+        console.log(`accessing of collection with parameters ${{server: accessParams.server.substring(0, 10), db: accessParams.database, collection: accessParams.collection}} failed: ${err}`);
         return null;
     }
     return collection;
 }
-
-exports.Collection = Collection;
