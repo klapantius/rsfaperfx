@@ -3,7 +3,7 @@ const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-const { Test, Upload } = require('./api/db');
+const { Test, Upload } = require('./api/dbutils');
 
 app.prepare().then(() => {
     const server = express();
