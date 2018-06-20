@@ -8,6 +8,9 @@
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "cross-env NODE_ENV=production node production-server/server.js"
   },
+  "now": {
+    "alias": "rsfaperfx"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/klapantius/rsfaperfx.git"
