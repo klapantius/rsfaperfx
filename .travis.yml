@@ -12,9 +12,9 @@ deploy:
     skip_cleanup: true
     on:
       all_branches: true
-      master: false
-  - provider: script
-    script: now --public --token $NOW_TOKEN --regions bru -e DATABASE=@rsfa_db_access && now alias --token $NOW_TOKEN
-    skip_cleanup: true
-    on:
-      master: true
+  #     master: false
+  # - provider: script
+  #   script: now --public --token $NOW_TOKEN --regions bru -e DATABASE=@rsfa_db_access && now alias --token $NOW_TOKEN
+  #   skip_cleanup: true
+  #   on:
+  #     master: true
