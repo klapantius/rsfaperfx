@@ -8,11 +8,8 @@ async function Test() {
         console.log(`rsfaCount: ${rsfaCount}`);
         return {
             query_time: new Date().toString(),
-            collections: (await data
-                .parentDB()
-                .listCollections()
-                .toArray()).map(x => x.name),
-            size_of_rsfa: rsfaCount
+            size_of_rsfa: rsfaCount,
+            first10: await data.find().limit(10).toArray()
         };
     } finally {
         if (data) data.close();

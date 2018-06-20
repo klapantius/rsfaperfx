@@ -17,7 +17,12 @@ export default class App extends Component {
     render() {
         return (
             <div>Hello World! Let's dance!<br />
-                {JSON.stringify(this.state, null, 2)}
+                <p>{this.state.query_time}</p>
+                <p>found {this.state.size_of_rsfa} entries<br />here are the first 10 of them:
+                <ul>
+                    {this.state.first10.map(i => <li>{JSON.stringify(i)}</li>)}
+                </ul>
+                </p>
             </div>
         )
     }
