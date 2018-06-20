@@ -14,7 +14,7 @@ deploy:
       all_branches: true
       master: false
   - provider: script
-    script: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+    script: now --public --token $NOW_TOKEN --regions bru -e DATABASE=@rsfa_db_access && now alias --token $NOW_TOKEN
     skip_cleanup: true
     on:
       master: true
