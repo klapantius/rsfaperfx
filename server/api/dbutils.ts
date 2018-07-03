@@ -1,4 +1,4 @@
-const { Collection } = require("./collection");
+import { Collection } from "./collection";
 
 export async function Test() {
     let data;
@@ -9,11 +9,47 @@ export async function Test() {
         return {
             query_time: `Query time: ${new Date().toString()}`,
             size_of_rsfa: rsfaCount,
-            first10: await data.find().limit(10).toArray()
+            first10: await data
+                .find()
+                .limit(10)
+                .toArray()
         };
     } finally {
         if (data) data.close();
     }
+}
+
+function ConvertTimeStampsToDates(data) {
+    data.forEach(rec => {
+        rec.date = new Date(rec.timestamp);
+    });
+    return data;
+}
+
+export async function LastDurations() {
+    let data = await Collection();
+    return ConvertTimeStampsToDates(await data.ExecuteSafely(GetLatestDurations));
+}
+
+export class DurationSummary {
+    _id: string;
+    duration: string;
+    timestamp: number;
+    date: string;
+}
+async function GetLatestDurations(data): Promise<Array<DurationSummary>> {
+    return await data
+        .aggregate([
+            { $sort: { timestamp: -1 } },
+            {
+                $group: {
+                    _id: "$pattern",
+                    duration: { $first: "$avgtxt" },
+                    timestamp: { $first: "$timestamp" }
+                }
+            }
+        ])
+        .toArray();
 }
 
 export async function Upload() {

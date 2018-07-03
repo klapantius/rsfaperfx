@@ -1,11 +1,13 @@
 const MongoClient = require("mongodb").MongoClient;
 
-export async function Collection(accessParams = {
-    server: process.env.DATABASE || "@localhost:27017",
-    database: "helloworld-database",
-    collection: "rsfa",
-    title: "server"
-}) {
+export async function Collection(
+    accessParams = {
+        server: process.env.DATABASE || "@localhost:27017",
+        database: "helloworld-database",
+        collection: "rsfa",
+        title: "server"
+    }
+) {
     let collection;
     try {
         const url = accessParams.server.startsWith("mongodb://")
@@ -15,18 +17,32 @@ export async function Collection(accessParams = {
         console.log(`Connected successfully to ${accessParams.title}`);
         const db = client.db(accessParams.database);
         collection = db.collection(accessParams.collection);
-        collection.close = function () {
+        collection.close = function() {
             if (client) {
                 client.close();
                 console.log(`Connection to ${accessParams.title} closed.`);
             }
         };
-        collection.parentDB = function () {
+        collection.parentDB = function() {
             return db;
         };
-    }
-    catch (err) {
-        console.log(`accessing of collection with parameters ${{server: accessParams.server.substring(0, 10), db: accessParams.database, collection: accessParams.collection}} failed: ${err}`);
+        collection.ExecuteSafely = async function(fn) {
+            try {
+                return await fn(collection);
+            } catch (exc) {
+                return { error: exc };
+            } finally {
+                collection.close();
+            }
+        };
+    } catch (err) {
+        console.log(
+            `accessing of collection with parameters ${{
+                server: accessParams.server.substring(0, 10),
+                db: accessParams.database,
+                collection: accessParams.collection
+            }} failed: ${err}`
+        );
         return null;
     }
     return collection;

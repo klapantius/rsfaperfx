@@ -1,6 +1,6 @@
 import * as next from "next";
 import * as express from "express";
-import { Test, Upload } from './api/dbutils';
+import { Test, Upload, LastDurations } from './api/dbutils';
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -12,6 +12,11 @@ app.prepare().then(() => {
     server.get('/api/db', async (req, res) => {
         console.log(req.path)
         res.send(await Test());
+    });
+
+    server.get('/api/status', async (req, res) => {
+        console.log(req.path)
+        res.send(await LastDurations());
     });
 
     server.get('/api/upload', async (req, res) => {
