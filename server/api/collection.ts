@@ -1,13 +1,23 @@
 const MongoClient = require("mongodb").MongoClient;
 
-export async function Collection(
-    accessParams = {
-        server: process.env.DATABASE || "@localhost:27017",
-        database: "helloworld-database",
-        collection: "rsfa",
-        title: "server"
+export class AccessParams {
+    server: string;
+    database: string;
+    collection: string;
+    title: string;
+    constructor(
+        server = process.env.DATABASE || "@localhost:27017",
+        database = "helloworld-database",
+        collection = "rsfa",
+        title = "server"
+    ) {
+        this.server = server;
+        this.database = database;
+        this.collection = collection;
+        this.title = title;
     }
-) {
+}
+export async function Collection(accessParams = new AccessParams()) {
     let collection;
     try {
         const url = accessParams.server.startsWith("mongodb://")

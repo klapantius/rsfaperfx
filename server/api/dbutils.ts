@@ -1,4 +1,4 @@
-import { Collection } from "./collection";
+import { Collection, AccessParams } from "./collection";
 
 export async function Test() {
     let data;
@@ -28,7 +28,9 @@ function ConvertTimeStampsToDates(data) {
 
 export async function LastDurations() {
     let data = await Collection();
-    return ConvertTimeStampsToDates(await data.ExecuteSafely(GetLatestDurations));
+    return ConvertTimeStampsToDates(
+        await data.ExecuteSafely(GetLatestDurations)
+    );
 }
 
 export class DurationSummary {
@@ -63,8 +65,12 @@ export async function Upload() {
     let [local, cloud] = [null, null];
     try {
         [local, cloud] = await Promise.all([
-            Collection({ server: process.env.LOCAL_DB, title: "local" }),
-            Collection({ server: process.env.CLOUD_DB, title: "cloud" })
+            Collection(
+                new AccessParams(process.env.LOCAL_DB, null, null, "local")
+            ),
+            Collection(
+                new AccessParams(process.env.CLOUD_DB, null, null, "cloud")
+            )
         ]);
         if (!local || !cloud)
             throw "Upload aborted due to database connection error";
