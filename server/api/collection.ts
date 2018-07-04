@@ -6,10 +6,10 @@ export class AccessParams {
     collection: string;
     title: string;
     constructor(
-        server = process.env.DATABASE || "@localhost:27017",
-        database = "helloworld-database",
-        collection = "rsfa",
-        title = "server"
+        server:string = process.env.DATABASE || "@localhost:27017",
+        database:string = "helloworld-database",
+        collection:string = "rsfa",
+        title:string = "server"
     ) {
         this.server = server;
         this.database = database;
@@ -47,11 +47,11 @@ export async function Collection(accessParams = new AccessParams()) {
         };
     } catch (err) {
         console.log(
-            `accessing of collection with parameters ${{
+            `accessing of collection with parameters ${JSON.stringify({
                 server: accessParams.server.substring(0, 10),
                 db: accessParams.database,
                 collection: accessParams.collection
-            }} failed: ${err}`
+            })} failed: ${err}`
         );
         return null;
     }

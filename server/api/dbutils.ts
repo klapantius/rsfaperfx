@@ -66,10 +66,10 @@ export async function Upload() {
     try {
         [local, cloud] = await Promise.all([
             Collection(
-                new AccessParams(process.env.LOCAL_DB, null, null, "local")
+                new AccessParams(process.env.LOCAL_DB, undefined, undefined, "local")
             ),
             Collection(
-                new AccessParams(process.env.CLOUD_DB, null, null, "cloud")
+                new AccessParams(process.env.CLOUD_DB, undefined, undefined, "cloud")
             )
         ]);
         if (!local || !cloud)
