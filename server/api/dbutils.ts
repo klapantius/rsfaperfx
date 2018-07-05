@@ -27,10 +27,14 @@ function ConvertTimeStampsToDates(data) {
 }
 
 export async function LastDurations() {
-    let data = await Collection();
-    return ConvertTimeStampsToDates(
-        await data.ExecuteSafely(GetLatestDurations)
-    );
+    try {
+        let data = await Collection();
+        return ConvertTimeStampsToDates(
+            await data.ExecuteSafely(GetLatestDurations)
+        );
+    } catch (e) {
+        return { error: e };
+    }
 }
 
 export class DurationSummary {
@@ -66,10 +70,20 @@ export async function Upload() {
     try {
         [local, cloud] = await Promise.all([
             Collection(
-                new AccessParams(process.env.LOCAL_DB, undefined, undefined, "local")
+                new AccessParams(
+                    process.env.LOCAL_DB,
+                    undefined,
+                    undefined,
+                    "local"
+                )
             ),
             Collection(
-                new AccessParams(process.env.CLOUD_DB, undefined, undefined, "cloud")
+                new AccessParams(
+                    process.env.CLOUD_DB,
+                    undefined,
+                    undefined,
+                    "cloud"
+                )
             )
         ]);
         if (!local || !cloud)
