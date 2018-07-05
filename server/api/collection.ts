@@ -24,13 +24,11 @@ export async function Collection(accessParams = new AccessParams()) {
             ? accessParams.server
             : `mongodb://${accessParams.server}`;
         const client = await MongoClient.connect(url);
-        console.log(`Connected successfully to ${accessParams.title}`);
         const db = client.db(accessParams.database);
         collection = db.collection(accessParams.collection);
         collection.close = function() {
             if (client) {
                 client.close();
-                console.log(`Connection to ${accessParams.title} closed.`);
             }
         };
         collection.parentDB = function() {
