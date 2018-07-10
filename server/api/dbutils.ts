@@ -27,7 +27,6 @@ function ConvertTimeStampsToDates(data) {
         });
         return data;
     }
-    console.error("I'm going to throw an exception");
     throw new Error("ConvertTimeStampsToDates() received an empty array");
 }
 
@@ -38,7 +37,7 @@ export async function LastDurations() {
             await data.ExecuteSafely(GetLatestDurations)
         );
     } catch (e) {
-        console.error(`${e.message}\n${e.stack}`);
+        console.error(e.stack);
         return { error: e.message };
     }
 }
