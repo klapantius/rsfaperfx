@@ -6,6 +6,7 @@ import SummaryContext from "../components/summaryContext";
 import SelectionContext from "../components/selectionContext";
 import Summary from "../components/summaryTable";
 import StatusLine from "../components/statusLine";
+import { className } from "className";
 
 export default class App extends Component {
     constructor(props) {
