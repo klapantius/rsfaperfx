@@ -3,7 +3,7 @@ import Head from "next/head";
 import fetch from "node-fetch";
 
 import SummaryContext from '../components/summaryContext';
-import Summary from '../components/summary';
+import Summary from '../components/summaryTable';
 import StatusLine from "../components/statusLine";
 
 
