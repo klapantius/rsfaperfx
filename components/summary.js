@@ -13,13 +13,11 @@ function Summary(props) {
         <SummaryContext.Consumer>
             {summary => (
                 <div>
-                    <Typography variant="caption">{summary["query_time"]}</Typography>
-                    {summary["size_of_rsfa"] && <Typography variant="body1">Found {summary["size_of_rsfa"]} entries, here are the first 10 of them:</Typography>}
-                    {summary["first10"] && <ul>
-                        {summary["first10"].map(i => (
-                            <li key={i._id}><Typography variant="body2">{i.pattern}: {i.avgtxt}</Typography></li>
+                    <ul>
+                        {summary.map(i => (
+                            <li key={i._id}><Typography variant="body2">{i._id}: {i.duration}</Typography></li>
                         ))}
-                    </ul>}
+                    </ul>
                 </div>
 
             )}

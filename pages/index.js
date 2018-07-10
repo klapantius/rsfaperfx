@@ -18,15 +18,15 @@ export default class App extends Component {
 
     componentDidMount() {
         this.setState({ status: 'loading', ...this.state });
-        fetch("/api/db")
+        fetch("/api/status")
             .then(response => response.json())
-            .then(data => this.setState({
-                status: 'summary loaded',
-                summary: data,
+            .then(r => this.setState({
+                status: r.error ? `error while fetching summary data: ${r.error}` : 'summary loaded',
+                summary: r.error ? [] : r
             }))
             .catch(error => this.setState({
-                status: `loading of summary failed: ${error}`,
-                summary: [],
+                status: `processing of summary failed: ${error}`,
+                summary: []
             }));
     }
 

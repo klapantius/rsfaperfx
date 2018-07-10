@@ -1,4 +1,5 @@
 import { Collection, AccessParams } from "./collection";
+import { isArray } from "util";
 
 export async function Test() {
     let data;
@@ -20,10 +21,14 @@ export async function Test() {
 }
 
 function ConvertTimeStampsToDates(data) {
-    data.forEach(rec => {
-        rec.date = new Date(rec.timestamp);
-    });
-    return data;
+    if (isArray(data)) {
+        data.forEach(rec => {
+            rec.date = new Date(rec.timestamp);
+        });
+        return data;
+    }
+    console.error("I'm going to throw an exception");
+    throw new Error("ConvertTimeStampsToDates() received an empty array");
 }
 
 export async function LastDurations() {
@@ -33,7 +38,8 @@ export async function LastDurations() {
             await data.ExecuteSafely(GetLatestDurations)
         );
     } catch (e) {
-        return { error: e };
+        console.error(`${e.message}\n${e.stack}`);
+        return { error: e.message };
     }
 }
 
@@ -45,6 +51,10 @@ export class DurationSummary {
 }
 async function GetLatestDurations(data): Promise<Array<DurationSummary>> {
     return await data
+        // .find({
+        //     avgtxt: /\n+/,
+        //     pattern: /\w+/
+        // })
         .aggregate([
             { $sort: { timestamp: -1 } },
             {
