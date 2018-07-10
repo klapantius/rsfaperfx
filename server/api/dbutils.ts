@@ -50,11 +50,8 @@ export class DurationSummary {
 }
 async function GetLatestDurations(data): Promise<Array<DurationSummary>> {
     return await data
-        // .find({
-        //     avgtxt: /\n+/,
-        //     pattern: /\w+/
-        // })
         .aggregate([
+            { $match: { pattern: /\w+/ } },
             { $sort: { timestamp: -1 } },
             {
                 $group: {
