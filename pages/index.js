@@ -3,6 +3,7 @@ import Head from "next/head";
 import fetch from "node-fetch";
 
 import SummaryContext from "../components/summaryContext";
+import SelectionContext from "../components/selectionContext";
 import Summary from "../components/summaryTable";
 import StatusLine from "../components/statusLine";
 
@@ -60,16 +61,20 @@ export default class App extends Component {
     render() {
         return (
             <SummaryContext.Provider value={this.state.summary}>
-                <Head>
-                    <title>RSFA performance</title>
-                    <meta charSet="utf-8" />
-                    <meta
-                        name="viewport"
-                        content="initial-scale=1.0, width=device-width"
+                <SelectionContext.Provider value={this.state.selected}>
+                    <Head>
+                        <title>RSFA performance</title>
+                        <meta charSet="utf-8" />
+                        <meta
+                            name="viewport"
+                            content="initial-scale=1.0, width=device-width"
+                        />
+                    </Head>
+                    <Summary
+                        handleClick={(e, id) => this.selectionChanged(e, id)}
                     />
-                </Head>
-                <Summary handleClick={(e, id) => this.selectionChanged(e, id)} />
-                <StatusLine text={this.state.status} />
+                    <StatusLine text={this.state.status} />
+                </SelectionContext.Provider>
             </SummaryContext.Provider>
         );
     }
