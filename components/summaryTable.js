@@ -8,7 +8,7 @@ import SummaryContext from "./summaryContext";
 
 const SummaryTable = props => (
     <SummaryContext.Consumer>
-        {summary =>
+        {summary => (
             <Table>
                 <TableHead>
                     <TableRow>
@@ -19,7 +19,11 @@ const SummaryTable = props => (
                 </TableHead>
                 <TableBody>
                     {summary.map(row => (
-                        <TableRow key={row._id}>
+                        <TableRow
+                            hover
+                            key={row._id}
+                            onClick={event => props.handleClick(event, row._id)}
+                        >
                             <TableCell>{row._id}</TableCell>
                             <TableCell>{row.duration}</TableCell>
                             <TableCell>{row.date}</TableCell>
@@ -27,7 +31,7 @@ const SummaryTable = props => (
                     ))}
                 </TableBody>
             </Table>
-        }
+        )}
     </SummaryContext.Consumer>
 );
 
