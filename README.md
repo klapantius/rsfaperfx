@@ -4,5 +4,8 @@
 [http://https://rsfaperfx.now.sh/]RSFA performance monitor
 
 ##todos:
-- error handling on client side
 - api access logger (timestamp, targeted resource, ip,...)
+
+### done
+- error visualization on client side
+
