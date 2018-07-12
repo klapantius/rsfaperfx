@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import Head from "next/head";
 import fetch from "node-fetch";
 
@@ -8,7 +9,9 @@ import Summary from "../components/summaryTable";
 import StatusLine from "../components/statusLine";
 import { className } from "className";
 
-export default class App extends Component {
+const styles = theme => ({});
+
+class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -80,3 +83,5 @@ export default class App extends Component {
         );
     }
 }
+
+export default withStyles(styles)(App)
