@@ -33,6 +33,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "recharts": "^1.0.1",
     "typeface-roboto": "0.0.54",
     "typescript": "^2.9.2"
   },
