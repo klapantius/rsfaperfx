@@ -23,7 +23,7 @@ class App extends Component {
 
     componentDidMount() {
         this.setState({ status: "loading", ...this.state });
-        fetch("/api/status")
+        fetch("/api/summary")
             .then(response => response.json())
             .then(r =>
                 this.setState({

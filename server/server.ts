@@ -15,7 +15,7 @@ app.prepare().then(() => {
         res.send(await Test());
     });
 
-    server.get("/api/status", async (req, res) => {
+    server.get("/api/summary", async (req, res) => {
         console.log(req.path);
         res.send(await LastDurations());
     });
