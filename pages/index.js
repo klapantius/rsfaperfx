@@ -5,7 +5,9 @@ import fetch from "node-fetch";
 
 import SummaryContext from "../components/summaryContext";
 import SelectionContext from "../components/selectionContext";
+import Grid from "@material-ui/core/Grid";
 import Summary from "../components/summaryTable";
+import Chart from "../components/chart";
 import StatusLine from "../components/statusLine";
 import { className } from "className";
 
@@ -27,9 +29,7 @@ class App extends Component {
             .then(response => response.json())
             .then(r =>
                 this.setState({
-                    status: r.error
-                        ? `error while fetching summary data: ${r.error}`
-                        : "summary loaded",
+                    status: r.error ? `error while fetching summary data: ${r.error}` : "summary loaded",
                     summary: r.error ? [] : r
                 })
             )
@@ -53,10 +53,7 @@ class App extends Component {
         } else if (selectedIndex === selected.length - 1) {
             newSelected = newSelected.concat(selected.slice(0, -1));
         } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1)
-            );
+            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
         }
 
         this.setState({ selected: newSelected });
@@ -69,14 +66,16 @@ class App extends Component {
                     <Head>
                         <title>RSFA performance</title>
                         <meta charSet="utf-8" />
-                        <meta
-                            name="viewport"
-                            content="initial-scale=1.0, width=device-width"
-                        />
+                        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                     </Head>
-                    <Summary
-                        handleClick={(e, id) => this.selectionChanged(e, id)}
-                    />
+                    <Grid container alignItems="stretch">
+                        <Grid item>
+                            <Summary handleClick={(e, id) => this.selectionChanged(e, id)} />
+                        </Grid>
+                        <Grid item>
+                            <Chart />
+                        </Grid>
+                    </Grid>
                     <StatusLine text={this.state.status} />
                 </SelectionContext.Provider>
             </SummaryContext.Provider>
@@ -84,4 +83,4 @@ class App extends Component {
     }
 }
 
-export default withStyles(styles)(App)
+export default withStyles(styles)(App);

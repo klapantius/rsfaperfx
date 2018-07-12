@@ -11,7 +11,7 @@ import SelectionContext from "./selectionContext";
 
 const styles = theme => ({
     root: {
-        width: "50%",
+        // width: "50%",
         marginTop: theme.spacing.unit * 3,
         overflowX: "auto"
     },
